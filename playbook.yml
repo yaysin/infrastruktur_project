@@ -1,0 +1,65 @@
+---
+- name: Install and configure PostgreSQL
+  hosts: all
+  become: true
+  vars:
+    db_name: "visitor_db"
+    db_user: "visitor_user"
+    db_password: "your_password_here"
+    db_host: "localhost"
+    db_port: "5432"
+
+  tasks:
+    - name: Install PostgreSQL
+      yum:
+        name: postgresql-server
+        state: present
+
+    - name: Initialize PostgreSQL database
+      command: postgresql-setup initdb
+      when: ansible_distribution == "Amazon"
+
+    - name: Start and enable PostgreSQL
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
+
+    - name: Create the database
+      postgresql_db:
+        name: "{{ db_name }}"
+        state: present
+
+    - name: Create PostgreSQL user
+      postgresql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        db: "{{ db_name }}"
+        state: present
+        role_attr_flags: "LOGIN"
+
+    - name: Grant privileges to user
+      postgresql_user:
+        name: "{{ db_user }}"
+        db: "{{ db_name }}"
+        role_attr_flags: "CREATEDB, CONNECT"
+        state: present
+
+    - name: Allow PostgreSQL to listen on all IPs (only for external access)
+      lineinfile:
+        path: /var/lib/pgsql/data/postgresql.conf
+        regexp: '^#listen_addresses =.*'
+        line: "listen_addresses = '*'"
+        state: present
+
+    - name: Allow external access in pg_hba.conf
+      lineinfile:
+        path: /var/lib/pgsql/data/pg_hba.conf
+        regexp: '^# IPv4 local connections:'
+        line: "host    all             all             0.0.0.0/0            md5"
+        state: present
+
+    - name: Restart PostgreSQL service to apply changes
+      service:
+        name: postgresql
+        state: restarted
