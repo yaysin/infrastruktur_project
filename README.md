@@ -50,5 +50,5 @@ För att undvika säkerhetsproblem, se till att:
   
 -Dokumentation-
 * Infrastrukturdiagram: Se infrastructure_diagram.png för en visuell representation av infrastrukturen.
-* Teknisk dokumentation: Alla tekniska beslut och deras motiveringar finns i teknisk_dokumentation.docx.
+* Teknisk dokumentation: Alla tekniska beslut och deras motiveringar finns i teknisk_dokumentation.
 * Steg-för-steg guide: En detaljerad guide för att sätta upp infrastrukturen från början finns i setup_instructions.md.
