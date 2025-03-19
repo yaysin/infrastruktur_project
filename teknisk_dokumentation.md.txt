@@ -1,0 +1,65 @@
+Molnbaserad Infrastruktur med OpenTofu och Ansible
+1. Inledning
+Bakgrund
+Vårt konsultbolag har fått i uppdrag att utveckla en molnbaserad infrastruktur för en kunds webbtjänst. Kunden vill ha en säker och skalbar lösning som kan hanteras genom Infrastructure as Code (IaC). För att uppnå detta kommer vi att använda OpenTofu för infrastrukturdefinition och Ansible för konfiguration.
+Syfte
+Projektet syftar till att:
+•	Skapa en säker och skalbar molninfrastruktur i AWS.
+•	Automatisera installation och konfiguration med Ansible.
+•	Dokumentera processen för implementation och hantering.
+2. Arkitekturdesign
+Infrastrukturkomponenter
+EC2-instanser:
+•	Två webbservrar för att hantera inkommande trafik.
+•	En databasinstans för att lagra besöksdata.
+Lastbalanserare:
+•	Distribuerar trafik mellan webbservrarna för hög tillgänglighet.
+Subnät:
+•	Offentligt subnät för webbservrarna.
+•	Privat subnät för databasen.
+Säkerhetsgrupper och IAM-roller:
+•	Begränsad åtkomst till instanser och tjänster.
+•	IAM-roller för att hantera behörigheter.
+Hemligheter och miljövariabler:
+•	Säker lagring av databasanvändaruppgifter och anslutningsparametrar.
+3. Teknisk Implementation
+OpenTofu
+Vi använder OpenTofu för att provisionera följande resurser i AWS:
+•	EC2-instanser.
+•	Lastbalanserare.
+•	Subnät och säkerhetsgrupper.
+•	IAM-roller.
+Ansible
+Ansible används för att:
+•	Installera och konfigurera Nginx och Flask på webbservrarna.
+•	Installera och konfigurera PostgreSQL på databasservern.
+•	Lägga till miljövariabler för att ansluta webbapplikationen till databasen.
+Deployment-process
+1.	OpenTofu används för att skapa infrastrukturen i AWS.
+2.	Ansible körs för att installera och konfigurera servrarna.
+3.	Applikationen startas och testas via lastbalanseraren.
+4. Användningsinstruktioner
+1.	Klona repository:
+2.	git clone <repo-url>
+cd <repo-folder>
+3.	Konfigurera OpenTofu och kör initiering:
+4.	tofu init
+tofu apply
+5.	Kör Ansible-playbook för konfiguration:
+ansible-playbook setup.yml
+6.	Verifiera att applikationen körs genom att besöka:
+http://<load-balancer-url>
+5. Dokumentation och Referenser
+•	Infrastrukturdiagram (se bifogad bild)
+•	Teknisk beskrivning av implementationen
+•	Länkar till relevanta OpenTofu och Ansible-dokumentationer
+•	Rapport om val och beslut som gjorts under projektets gång
+6. Slutleverans
+•	Projektdagbok
+•	Teknisk dokumentation
+•	Kod för OpenTofu och Ansible
+•	Presentation av lösningen
+•	Instruktioner för implementation och hantering
+7. Reflektioner och Slutsatser
+Projektet har gett oss praktisk erfarenhet av att bygga och hantera en molnbaserad infrastruktur. Genom att använda OpenTofu och Ansible har vi kunnat skapa en automatiserad och säker lösning som kan återanvändas i framtida projekt.
+
